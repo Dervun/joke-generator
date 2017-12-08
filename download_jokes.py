@@ -4,8 +4,15 @@ import time
 import requests
 from lxml import html
 
-start = 910688
+use_proxy = False
+proxy_list = ['http://122.183.139.105:8080',
+              'http://180.245.148.42:8080',
+              'http://180.248.3.82:8080'
+]
+
+start = 894265
 stop = 800000
+k = 0
 with open('jokes.txt', 'a', encoding='utf-8') as output_file:
     for n in range(start, stop, -1):
         url = 'http://www.anekdot.ru/id/{0:d}/'.format(n)
@@ -13,8 +20,26 @@ with open('jokes.txt', 'a', encoding='utf-8') as output_file:
             'User-Agent':
                 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36'
         }
+        proxies = {
+            'http': proxy_list[k % len(proxy_list)],
+            'https': proxy_list[k % len(proxy_list)]
+        }
+        try:
+            if use_proxy:
+                r = requests.get(url, headers=headers, proxies=proxies)
+            else:
+                r = requests.get(url, headers=headers)
+        except TimeoutError:
+            print('TimeoutError')
+            k += 1
+            time.sleep(10)
+            continue
+        except requests.exceptions.ConnectionError:
+            print('requests.exceptions.ConnectionError')
+            k += 1
+            time.sleep(10)
+            continue
 
-        r = requests.get(url, headers=headers)
         while r.status_code != 200:
             print('sleep for 5 seconds')
             time.sleep(5)
