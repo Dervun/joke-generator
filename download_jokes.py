@@ -10,7 +10,7 @@ proxy_list = ['http://122.183.139.105:8080',
               'http://180.248.3.82:8080'
 ]
 
-start = 890566
+start = 881263
 stop = 800000
 k = 0
 with open('jokes.txt', 'a', encoding='utf-8') as output_file:
@@ -46,9 +46,9 @@ with open('jokes.txt', 'a', encoding='utf-8') as output_file:
             time.sleep(10)
             continue
 
-        while r.status_code != 200:
-            print('sleep for 5 seconds')
-            time.sleep(5)
+        while r.status_code != requests.codes.ok:
+            print('status_code != requests.codes.ok, sleep for 10 seconds')
+            time.sleep(10)
             print('try to get request')
             r = requests.get(url, headers=headers)
 
