@@ -1,10 +1,11 @@
 """This script for downloading jokes from the site www.anekdot.ru"""
 
+import time
 import requests
 from lxml import html
 
-start = 916848
-stop = 910000
+start = 910688
+stop = 800000
 with open('jokes.txt', 'a', encoding='utf-8') as output_file:
     for n in range(start, stop, -1):
         url = 'http://www.anekdot.ru/id/{0:d}/'.format(n)
@@ -14,6 +15,12 @@ with open('jokes.txt', 'a', encoding='utf-8') as output_file:
         }
 
         r = requests.get(url, headers=headers)
+        while r.status_code != 200:
+            print('sleep for 5 seconds')
+            time.sleep(5)
+            print('try to get request')
+            r = requests.get(url, headers=headers)
+
         current_page = html.fromstring(r.text)
 
         try:
