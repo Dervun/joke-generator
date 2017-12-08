@@ -3,7 +3,7 @@
 import requests
 from lxml import html
 
-start = 920000
+start = 916848
 stop = 910000
 with open('jokes.txt', 'a', encoding='utf-8') as output_file:
     for n in range(start, stop, -1):
@@ -16,7 +16,11 @@ with open('jokes.txt', 'a', encoding='utf-8') as output_file:
         r = requests.get(url, headers=headers)
         current_page = html.fromstring(r.text)
 
-        div_node = current_page.xpath('//div[@class="a_id_item"]')[0]  # find the div we need
+        try:
+            div_node = current_page.xpath('//div[@class="a_id_item"]')[0]  # find the div we need
+        except IndexError:
+            print('joke not found')
+            continue
         text_node = div_node.xpath('./div[@class="text"]')[0]
 
         # add only text jokes
