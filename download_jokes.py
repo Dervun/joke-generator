@@ -10,7 +10,7 @@ proxy_list = ['http://122.183.139.105:8080',
               'http://180.248.3.82:8080'
 ]
 
-start = 894265
+start = 890566
 stop = 800000
 k = 0
 with open('jokes.txt', 'a', encoding='utf-8') as output_file:
@@ -18,7 +18,13 @@ with open('jokes.txt', 'a', encoding='utf-8') as output_file:
         url = 'http://www.anekdot.ru/id/{0:d}/'.format(n)
         headers = {
             'User-Agent':
-                'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36'
+                'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36',
+            'Host': 'www.anekdot.ru',
+            'Cookie': 'enter your cookie here',
+            'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+            'DNT': '1'
         }
         proxies = {
             'http': proxy_list[k % len(proxy_list)],
