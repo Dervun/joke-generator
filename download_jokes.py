@@ -20,11 +20,9 @@ with open('jokes.txt', 'a', encoding='utf-8') as output_file:
             'User-Agent':
                 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36',
             'Host': 'www.anekdot.ru',
-            'Cookie': 'enter your cookie here',
             'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
             'Accept-Encoding': 'gzip, deflate, br',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-            'DNT': '1'
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
         }
         proxies = {
             'http': proxy_list[k % len(proxy_list)],
@@ -46,11 +44,16 @@ with open('jokes.txt', 'a', encoding='utf-8') as output_file:
             time.sleep(10)
             continue
 
+        step = 0
         while r.status_code != requests.codes.ok:
-            print('status_code != requests.codes.ok, sleep for 10 seconds')
+            print(r.status_code, 'sleep for 10 seconds')
+            k += 1
+            step += 1
             time.sleep(10)
             print('try to get request')
             r = requests.get(url, headers=headers)
+            if step > 3:
+                break
 
         current_page = html.fromstring(r.text)
 
