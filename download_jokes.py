@@ -10,19 +10,15 @@ proxy_list = ['http://122.183.139.105:8080',
               'http://180.248.3.82:8080'
 ]
 
-start = 881263
-stop = 800000
-k = 0
+start = 468030
+stop = 400000
+k = 2
 with open('jokes.txt', 'a', encoding='utf-8') as output_file:
     for n in range(start, stop, -1):
         url = 'http://www.anekdot.ru/id/{0:d}/'.format(n)
         headers = {
             'User-Agent':
-                'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36',
-            'Host': 'www.anekdot.ru',
-            'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
+                'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36'
         }
         proxies = {
             'http': proxy_list[k % len(proxy_list)],
@@ -44,16 +40,12 @@ with open('jokes.txt', 'a', encoding='utf-8') as output_file:
             time.sleep(10)
             continue
 
-        step = 0
-        while r.status_code != requests.codes.ok:
-            print(r.status_code, 'sleep for 10 seconds')
+        if r.status_code != requests.codes.ok:
+            print(r.status_code, 'sleep for 2 seconds')
             k += 1
-            step += 1
-            time.sleep(10)
+            time.sleep(2)
             print('try to get request')
             r = requests.get(url, headers=headers)
-            if step > 3:
-                break
 
         current_page = html.fromstring(r.text)
 
